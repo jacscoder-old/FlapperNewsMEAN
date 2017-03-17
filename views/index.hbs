@@ -1,2 +1,80 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<html>
+  <head>
+    <title> FlapperNews </title>
+    <!-- js libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+    <script src="javascripts/angularApp.js"></script>
+
+    <!-- css libraries -->
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style> .glyphicon-thumbs-up { cursor: pointer } </style>
+  </head>
+
+  <body ng-app="angularApp">
+
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+
+        <ui-view></ui-view>
+
+      </div>
+    </div>
+
+    <!-- home.html --> 
+    <script type="text/ng-template" id="/home.html">
+      <div ng-controller="MainCtrl as mCtrl">
+        <div class="page-header">
+          <h1> My Flapper News </h1>
+        </div>
+
+        <div ng-repeat="post in mCtrl.posts | orderBy: '-upvotes'">
+          <span class="glyphicon glyphicon-thumbs-up" ng-click="mCtrl.addVote(post)"></span>
+          <a href="{{post.link}}" ng-show="post.link"> {{post.title}} </a>
+          <span ng-hide="post.link"> {{post.title}} </span>
+          - upvotes: {{post.upvotes}}
+          <span>
+            <a href="#/posts/{{$index}}"> comments </a>
+          </span>
+        </div>
+
+        <form ng-submit="mCtrl.addPost()" style="margin-top: 30px;">
+          <h3> Add a new post </h3>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Link" ng-model="mCtrl.title"></input>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="title" ng-model="mCtrl.link"></input> 
+          </div>
+          <button type="submit" class="btn btn-primary"> Post </button>
+        </form>        
+      </div> 
+    </script>
+
+    <!-- posts.html -->
+    <script type="text/ng-template" id="/posts.html">
+      <div ng-controller="PostsCtrl as pCtrl">
+        <div class="page-header">
+          <h1> Comments </h1>
+        </div>
+
+        <div ng-repeat="comment in pCtrl.comments | orderBy: '-upvotes'">
+          <span class="glyphicon glyphicon-thumbs-up" ng-click="addVote(comment)"></span>
+          {{comment.author}} - {{comment.votes}}
+          <span style="font-size: 20px; margin-left: 10px;"> {{comment.body}} </span>
+        </div>
+
+        <form ng-submit="pCtrl.addComment()" style="margin-top: 30px">
+          <h3> Add a new comment </h3>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="comment" ng-model="pCtrl.comment">
+          </div>
+          <button type="submit" class="btn btn-primary"> Post </button>
+        </form>
+
+      </div>
+    </script>
+
+  </body>
+
+</html>
