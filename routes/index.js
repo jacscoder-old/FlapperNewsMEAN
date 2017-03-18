@@ -42,7 +42,7 @@ router.param('post', function(req, res, next, id) {
 
 // return an individual post
 router.get('/posts/:id', function(req, res, next) {
-
+  req.json(req.post);
 });
 
 // upvote a post
