@@ -40,9 +40,12 @@ router.param('post', function(req, res, next, id) {
   });
 });
 
-// return an individual post
+// return an individual post with comments
 router.get('/posts/:post', function(req, res, next) {
-  req.json(req.post);
+  req.post.populate('comments', function(err, post) {
+    if(err) { return next(err); }
+    req.json(req.post);
+  });
 });
 
 // upvote a post
