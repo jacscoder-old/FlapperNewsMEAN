@@ -32,7 +32,7 @@ router.post('/posts', function(req, res, next) {
 router.param('post', function(req, res, next, id) {
   var query = Post.findById(id);
 
-  query.exex(function(err, post) {
+  query.exec(function(err, post) {
     if(err) { next(err); }
     if(!post) { return next(new Error('do not find post')); }
     req.post = post;
