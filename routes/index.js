@@ -55,7 +55,12 @@ router.put('/posts/:post/upvote', function(req, res, next) {
 
 // creat a new comment for a post
 router.post('/posts/:id/comments', function(req, res, next) {
+  var comment = new Comment(req.body);
 
+  comment.save(function(err, comment) {
+    if(err) { return next(err); }
+    res.json(comment);
+  });
 });
 
 // upvote a comment
