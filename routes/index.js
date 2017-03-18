@@ -41,12 +41,12 @@ router.param('post', function(req, res, next, id) {
 });
 
 // return an individual post
-router.get('/posts/:id', function(req, res, next) {
+router.get('/posts/:post', function(req, res, next) {
   req.json(req.post);
 });
 
 // upvote a post
-router.put('/posts/:id/upvote', function(req, res, next) {
+router.put('/posts/:post/upvote', function(req, res, next) {
   req.post.vpvote(function(err, post) {
     if(err) { return next(err); }
     res.json(post);
