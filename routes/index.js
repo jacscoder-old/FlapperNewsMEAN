@@ -47,7 +47,10 @@ router.get('/posts/:id', function(req, res, next) {
 
 // upvote a post
 router.put('/posts/:id/upvote', function(req, res, next) {
-
+  req.post.vpvote(function(err, post) {
+    if(err) { return next(err); }
+    res.json(post);
+  });
 });
 
 // creat a new comment for a post
