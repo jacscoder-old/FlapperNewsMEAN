@@ -11,7 +11,10 @@ router.get('/', function(req, res, next) {
 
 // return all posts
 router.get('/posts', function(req, res, next) {
-
+  Post.find(function(err, posts) {
+    if(err) { return next(err); }
+    res.json(posts);
+  });
 });
 
 // create a new post
