@@ -55,13 +55,20 @@ var app = angular.module('flapperNews', ['ui.router'])
         return $http.get('/posts/' + id).then(
           function(res) {
             self.post = res.data;
-            console.log(self.post);
             return res.data;
           },
           function(res) {
             console.log('Unable yo get the post');
           });
       },
+      addComment: function(id, comment) {
+        return $http.post('/posts/' + id + '/comments', comment);
+      },
+      upvoteComment: function(comment) {
+        return $http.put('/posts/' + comment.post + '/comments/' + comment._id + '/upvote').success(function(data) {
+            comment.upvotes += 1;
+          });
+      }
     };
   }])
 
@@ -85,7 +92,6 @@ var app = angular.module('flapperNews', ['ui.router'])
 
     self.addVote = function(post) {
       posts.upvote(post);
-      // post.upvotes += 1;
     }
 
   }])
@@ -94,16 +100,20 @@ var app = angular.module('flapperNews', ['ui.router'])
     var self = this;
 
     self.comments = posts.post.comments;
-    // self.comments = post.comments;
 
     self.addComment = function() {
       if(self.comment === '') { return; }
-      posts.posts[$stateParams.id].comments.push({
+      posts.addComment(posts.post._id, {
         author: 'user',
-        body: self.comment,
-        upvotes: 1
-      })
+        body: self.comment
+      }).success(function(data) {
+        self.comments.push(data);
+      });
       self.comment = '';
+    }
+
+    self.addVote = function(comment) {
+      posts.upvoteComment(comment);
     }
 
   }]);

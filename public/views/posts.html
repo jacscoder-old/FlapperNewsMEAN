@@ -4,8 +4,8 @@
   </div>
 
   <div ng-repeat="comment in pCtrl.comments | orderBy: '-upvotes'">
-    <span class="glyphicon glyphicon-thumbs-up" ng-click="addVote(comment)"></span>
-    {{comment.author}} - {{comment.votes}}
+    <span class="glyphicon glyphicon-thumbs-up" ng-click="pCtrl.addVote(comment)"></span>
+    {{comment.author}} - {{comment.upvotes}}
     <span style="font-size: 20px; margin-left: 10px;"> {{comment.body}} </span>
   </div>
 
