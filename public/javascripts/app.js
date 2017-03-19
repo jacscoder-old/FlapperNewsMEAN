@@ -32,11 +32,12 @@ var app = angular.module('flapperNews', ['ui.router'])
           angular.copy(data, self.posts);
         });
       },
-      // create: function() {
-      //   return $http.post('/posts').success(function() {
-
-      //   });
-      // }
+      create: function(post) {
+        var self = this;
+        return $http.post('/posts', post).success(function(data) {
+          self.posts.push(data);
+        });
+      }
     };
   }])
 
@@ -48,7 +49,12 @@ var app = angular.module('flapperNews', ['ui.router'])
 
     self.addPost = function() {
       if(!self.title || self.title === '') { return; }
-      self.posts.push({title: self.title, link: self.link, upvotes: 4});
+
+      posts.create({
+        title: self.title,
+        link: self.link,
+      });
+
       self.title = '';
       self.link = ''
     }
