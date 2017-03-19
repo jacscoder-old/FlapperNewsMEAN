@@ -1,0 +1,26 @@
+<div ng-controller="MainCtrl as mCtrl">
+  <div class="page-header">
+    <h1> Flapper News </h1>
+  </div>
+
+  <div ng-repeat="post in mCtrl.posts | orderBy: '-upvotes'">
+    <span class="glyphicon glyphicon-thumbs-up" ng-click="mCtrl.addVote(post)"></span>
+    <a href="{{post.link}}" ng-show="post.link"> {{post.title}} </a>
+    <span ng-hide="post.link"> {{post.title}} </span>
+    - upvotes: {{post.upvotes}}
+    <span>
+      <a href="#/posts/{{$index}}"> comments </a>
+    </span>
+  </div>
+
+  <form ng-submit="mCtrl.addPost()" style="margin-top: 30px;">
+    <h3> Add a new post </h3>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Link" ng-model="mCtrl.title"></input>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="title" ng-model="mCtrl.link"></input>
+    </div>
+    <button type="submit" class="btn btn-primary"> Post </button>
+  </form>
+</div>
