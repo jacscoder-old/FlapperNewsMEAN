@@ -16,7 +16,12 @@ var app = angular.module('flapperNews', ['ui.router'])
       .state('posts', {
         url: '/posts/{id}',
         templateUrl: '/views/posts.html',
-        controller: 'PostsCtrl'
+        controller: 'PostsCtrl',
+        resolve: {
+          post: ['$stateParams', 'posts', function($stateParams, posts) {
+            return posts.get($stateParams.id);
+          }]
+        }
       })
 
     $urlRouterProvider.otherwise('/home');
@@ -26,6 +31,7 @@ var app = angular.module('flapperNews', ['ui.router'])
   .factory('posts', ['$http', function($http) {
     return {
       posts: [],
+      post: null,
       getAll: function() {
         var self = this;
         return $http.get('/posts').success(function(data) {
@@ -41,9 +47,21 @@ var app = angular.module('flapperNews', ['ui.router'])
       upvote: function(post) {
         var self = this;
         return $http.put('/posts/' + post._id + '/upvote').success(function(data) {
-          post.upvotes += 1;
-        });
-      }
+            post.upvotes += 1;
+          });
+      },
+      get: function(id) {
+        var self = this;
+        return $http.get('/posts/' + id).then(
+          function(res) {
+            self.post = res.data;
+            console.log(self.post);
+            return res.data;
+          },
+          function(res) {
+            console.log('Unable yo get the post');
+          });
+      },
     };
   }])
 
@@ -75,7 +93,8 @@ var app = angular.module('flapperNews', ['ui.router'])
   .controller('PostsCtrl', ['$stateParams', 'posts', function ($stateParams, posts) {
     var self = this;
 
-    self.comments = posts.posts[$stateParams.id].comments;
+    self.comments = posts.post.comments;
+    // self.comments = post.comments;
 
     self.addComment = function() {
       if(self.comment === '') { return; }
