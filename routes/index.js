@@ -66,6 +66,7 @@ router.post('/posts/:post/comments', function(req, res, next) {
     req.post.comments.push(comment);
     req.post.save(function(err, post) {
       if(err) { return next(err); }
+      comment.post = comment.post._id; // this is an ugly writing.
       res.json(comment);
     });
   });

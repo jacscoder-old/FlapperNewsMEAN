@@ -38,18 +38,21 @@ var app = angular.module('flapperNews', ['ui.router'])
           angular.copy(data, self.posts);
         });
       },
+
       create: function(post) {
         var self = this;
         return $http.post('/posts', post).success(function(data) {
           self.posts.push(data);
         });
       },
+
       upvote: function(post) {
         var self = this;
         return $http.put('/posts/' + post._id + '/upvote').success(function(data) {
             post.upvotes += 1;
           });
       },
+
       get: function(id) {
         var self = this;
         return $http.get('/posts/' + id).then(
@@ -61,9 +64,11 @@ var app = angular.module('flapperNews', ['ui.router'])
             console.log('Unable yo get the post');
           });
       },
+
       addComment: function(id, comment) {
         return $http.post('/posts/' + id + '/comments', comment);
       },
+
       upvoteComment: function(comment) {
         return $http.put('/posts/' + comment.post + '/comments/' + comment._id + '/upvote').success(function(data) {
             comment.upvotes += 1;
@@ -107,6 +112,7 @@ var app = angular.module('flapperNews', ['ui.router'])
         author: 'user',
         body: self.comment
       }).success(function(data) {
+        console.log(data);
         self.comments.push(data);
       });
       self.comment = '';
