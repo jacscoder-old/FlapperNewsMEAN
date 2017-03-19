@@ -37,6 +37,12 @@ var app = angular.module('flapperNews', ['ui.router'])
         return $http.post('/posts', post).success(function(data) {
           self.posts.push(data);
         });
+      },
+      upvote: function(post) {
+        var self = this;
+        return $http.put('/posts/' + post._id + '/upvote').success(function(data) {
+          post.upvotes += 1;
+        });
       }
     };
   }])
@@ -60,7 +66,8 @@ var app = angular.module('flapperNews', ['ui.router'])
     }
 
     self.addVote = function(post) {
-      post.upvotes += 1;
+      posts.upvote(post);
+      // post.upvotes += 1;
     }
 
   }])
